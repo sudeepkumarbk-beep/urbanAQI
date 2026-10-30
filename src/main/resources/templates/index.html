@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Urban AQI Monitoring System</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<header>
+    <h1>🌍 Urban Air Quality Monitoring System</h1>
+    <p>Environmental Engineering & Public Health</p>
+</header>
+
+
+
+<nav>
+    <a href="/">Dashboard</a>
+    <a href="/sensors">Sensors</a>
+    <a href="/#history">History</a>
+    <a href="/#alerts">Alerts</a>
+    <a href="/reports">Reports</a>
+</nav>
+
+
+
+<main>
+
+    <!-- LOCATION -->
+    <section class="location">
+
+        <h2>Current Air Quality</h2>
+
+        <p>📍 Location: Bengaluru</p>
+
+        <p class="last-updated">
+            🕒 Last Updated:
+            <span th:text="${lastUpdated}"></span>
+        </p>
+
+    </section>
+
+
+    <!-- AQI CARD -->
+    <section class="aqi-card">
+
+        <h2>Overall AQI</h2>
+
+
+        <!-- AQI NUMBER -->
+        <div class="aqi-number"
+             th:classappend="${aqi <= 50 ? 'aqi-good' :
+                              aqi <= 100 ? 'aqi-satisfactory' :
+                              aqi <= 200 ? 'aqi-moderate' :
+                              aqi <= 300 ? 'aqi-poor' :
+                              aqi <= 400 ? 'aqi-very-poor' :
+                              'aqi-severe'}">
+
+            <span th:text="${aqi}">57</span>
+
+        </div>
+
+
+        <!-- AQI STATUS -->
+        <div class="aqi-status"
+             th:classappend="${aqi <= 50 ? 'aqi-good' :
+                              aqi <= 100 ? 'aqi-satisfactory' :
+                              aqi <= 200 ? 'aqi-moderate' :
+                              aqi <= 300 ? 'aqi-poor' :
+                              aqi <= 400 ? 'aqi-very-poor' :
+                              'aqi-severe'}">
+
+            <span th:text="${status}">Satisfactory</span>
+
+        </div>
+
+
+        <!-- AQI GAUGE -->
+        <div class="aqi-gauge">
+
+            <div class="gauge-bar">
+
+                <div class="aqi-indicator"
+                     th:style="'left:' + ${gaugePosition} + '%'">
+                </div>
+
+            </div>
+
+
+            <div class="gauge-labels">
+
+                <span style="left: 0%">0</span>
+                <span style="left: 10%">50</span>
+                <span style="left: 20%">100</span>
+                <span style="left: 40%">200</span>
+                <span style="left: 60%">300</span>
+                <span style="left: 80%">400</span>
+                <span style="left: 100%">500</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- MAIN POLLUTANT -->
+        <p class="main-pollutant">
+
+            Main Pollutant:
+            <strong th:text="${mainPollutant}"></strong>
+
+        </p>
+
+
+        <p>
+            Air quality may affect sensitive individuals.
+        </p>
+
+    </section>
+
+
+    <!-- POLLUTANTS -->
+    <h2 class="section-title">Pollutant Levels</h2>
+
+
+    <section class="pollutants">
+
+
+        <!-- PM2.5 -->
+        <div class="pollutant-card">
+
+            <h3>PM2.5</h3>
+
+            <p class="value" th:text="${pm25}">
+                24.01
+            </p>
+
+            <span>µg/m³</span>
+
+        </div>
+
+
+        <!-- PM10 -->
+        <div class="pollutant-card">
+
+            <h3>PM10</h3>
+
+            <p class="value" th:text="${pm10}">
+                57.7
+            </p>
+
+            <span>µg/m³</span>
+
+        </div>
+
+
+        <!-- CO -->
+        <div class="pollutant-card">
+
+            <h3>CO</h3>
+
+            <p class="value"
+               th:text="${#numbers.formatDecimal(co, 1, 5)}">
+                0.00096
+            </p>
+
+            <span>ppm</span>
+
+        </div>
+
+
+        <!-- NO2 -->
+        <div class="pollutant-card">
+
+            <h3>NO₂</h3>
+
+            <p class="value" th:text="${no2}">
+                15.58
+            </p>
+
+            <span>ppb</span>
+
+        </div>
+
+
+        <!-- SO2 -->
+        <div class="pollutant-card">
+
+            <h3>SO₂</h3>
+
+            <p class="value" th:text="${so2}">
+                4.95
+            </p>
+
+            <span>ppb</span>
+
+        </div>
+
+
+        <!-- O3 -->
+        <div class="pollutant-card">
+
+            <h3>O₃</h3>
+
+            <p class="value" th:text="${o3}">
+                18.84
+            </p>
+
+            <span>µg/m³</span>
+
+        </div>
+
+    </section>
+
+
+    <!-- ALERT -->
+    <section class="alert" id="alerts">
+
+        <h2>⚠ Air Quality Alert</h2>
+
+        <p th:text="${alert}">
+            Air quality alert will appear here.
+        </p>
+
+    </section>
+
+
+    <!-- AQI HISTORY -->
+    <section class="history-section" id="history">
+
+        <h2>📈 AQI History</h2>
+
+        <p class="history-description">
+            Recent air quality readings collected from the monitoring system.
+        </p>
+
+
+        <!-- HISTORY TABLE -->
+        <div class="history-table-container">
+
+            <table class="history-table">
+
+                <thead>
+
+                <tr>
+                    <th>Time</th>
+                    <th>AQI</th>
+                    <th>Status</th>
+                    <th>Main Pollutant</th>
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                <tr th:each="reading : ${history}">
+
+                    <td th:text="${#temporals.format(reading.time, 'hh:mm:ss a')}">
+                        04:05:52 PM
+                    </td>
+
+                    <td>
+                        <strong th:text="${reading.aqi}">
+                            57
+                        </strong>
+                    </td>
+
+                    <td th:text="${reading.status}">
+                        Satisfactory
+                    </td>
+
+                    <td th:text="${reading.mainPollutant}">
+                        PM10
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- AQI GRAPH -->
+        <div class="aqi-chart-container">
+
+            <h3>📊 AQI Trend</h3>
+
+            <canvas id="aqiChart"></canvas>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer>
+
+    <p>
+        Urban AQI Monitoring System | Java & Spring Boot Project
+    </p>
+
+</footer>
+
+
+<!-- AQI GRAPH JAVASCRIPT -->
+
+<!-- AQI GRAPH JAVASCRIPT -->
+<script th:inline="javascript">
+    const historyData = /*[[${chartHistory}]]*/ [];
+
+    const labels = historyData.map(reading => {
+        const rawTime = reading.time;
+        let date;
+
+        // Handle ISO date strings and LocalDateTime arrays
+        if (Array.isArray(rawTime)) {
+            date = new Date(
+                rawTime[0],
+                rawTime[1] - 1,
+                rawTime[2],
+                rawTime[3] || 0,
+                rawTime[4] || 0,
+                rawTime[5] || 0
+            );
+        } else {
+            date = new Date(rawTime);
+        }
+
+        return isNaN(date.getTime())
+            ? "Unknown"
+            : date.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            });
+    });
+
+    const aqiValues = historyData.map(reading => reading.aqi);
+
+    const canvas = document.getElementById("aqiChart");
+
+    if (canvas && typeof Chart !== "undefined") {
+        new Chart(canvas, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "AQI",
+                    data: aqiValues,
+                    tension: 0.3,
+                    fill: false,
+                    borderWidth: 2,
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: 0,
+                        max: 500,
+                        title: {
+                            display: true,
+                            text: "AQI"
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: "Time"
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        });
+    } else {
+        console.error("Chart.js or AQI chart canvas was not found.");
+    }
+</script>
+
+
+
+<!-- AUTO REFRESH EVERY 5 MINUTES -->
+<script>
+
+    setTimeout(function () {
+
+        location.reload();
+
+    }, 300000);
+
+</script>
+
+
+</body>
+
+</html>

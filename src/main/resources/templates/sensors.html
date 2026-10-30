@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban AQI - Sensors</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>🌍 Urban Air Quality Monitoring System</h1>
+    <p>Environmental Engineering & Public Health</p>
+</header>
+
+<nav>
+    <a href="/">Dashboard</a>
+    <a href="/sensors">Sensors</a>
+    <a href="/#history">History</a>
+    <a href="/#alerts">Alerts</a>
+    <a href="/reports">Reports</a>
+</nav>
+
+<main>
+
+    <h2>📡 Sensor Monitoring</h2>
+    <p>Live environmental readings retrieved from OpenAQ.</p>
+
+    <h2 class="section-title">Current Sensor Readings</h2>
+
+    <div class="sensor-grid">
+
+        <div class="sensor-card">
+            <h3>PM2.5</h3>
+            <div class="sensor-value" th:text="${pm25}">78.0</div>
+            <p>µg/m³</p>
+        </div>
+
+        <div class="sensor-card">
+            <h3>PM10</h3>
+            <div class="sensor-value" th:text="${pm10}">126.0</div>
+            <p>µg/m³</p>
+        </div>
+
+        <div class="sensor-card">
+            <h3>CO</h3>
+            <div class="sensor-value"
+                 th:text="${#numbers.formatDecimal(co, 1, 5)}">0.00096</div>
+            <p>ppm</p>
+        </div>
+
+        <div class="sensor-card">
+            <h3>NO₂</h3>
+            <div class="sensor-value" th:text="${no2}">54.0</div>
+            <p>ppb</p>
+        </div>
+
+        <div class="sensor-card">
+            <h3>SO₂</h3>
+            <div class="sensor-value" th:text="${so2}">21.0</div>
+            <p>ppb</p>
+        </div>
+
+        <div class="sensor-card">
+            <h3>O₃</h3>
+            <div class="sensor-value" th:text="${o3}">68.0</div>
+            <p>µg/m³</p>
+        </div>
+
+    </div>
+
+    <p>
+        Last updated:
+        <strong th:text="${lastUpdated}">12:00 PM</strong>
+    </p>
+
+</main>
+
+<footer>
+    Urban AQI Monitoring System | Java & Spring Boot Project
+</footer>
+
+</body>
+</html>

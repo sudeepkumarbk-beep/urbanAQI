@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban AQI - History</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>🌍 Urban Air Quality Monitoring System</h1>
+    <p>Environmental Engineering & Public Health</p>
+</header>
+
+<nav>
+    <a href="/">Dashboard</a>
+    <a href="/sensors">Sensors</a>
+    <a href="/history">History</a>
+    <a href="#">Alerts</a>
+    <a href="#">Reports</a>
+</nav>
+
+<main>
+
+    <h2 class="section-title">📈 AQI History</h2>
+
+    <p>Recorded air quality readings for this application session.</p>
+
+    <section class="sensor-form">
+
+        <table style="width:100%; border-collapse:collapse; text-align:left;">
+            <thead>
+            <tr>
+                <th style="padding:12px;">Date & Time</th>
+                <th style="padding:12px;">AQI</th>
+                <th style="padding:12px;">Status</th>
+                <th style="padding:12px;">Main Pollutant</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="reading : ${history}">
+                <td style="padding:12px;"
+                    th:text="${#temporals.format(reading.time, 'dd-MM-yyyy hh:mm:ss a')}"></td>
+
+                <td style="padding:12px;" th:text="${reading.aqi}"></td>
+
+                <td style="padding:12px;" th:text="${reading.status}"></td>
+
+                <td style="padding:12px;" th:text="${reading.mainPollutant}"></td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(history)}">
+                <td colspan="4" style="padding:15px;">
+                    No history available yet. Open the Dashboard to record your first reading.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+    <p style="margin-top:20px;">
+        <a href="/">← Back to Dashboard</a>
+    </p>
+
+</main>
+
+<footer>
+    <p>Urban AQI Monitoring System | Java & Spring Boot Project</p>
+</footer>
+
+</body>
+</html>

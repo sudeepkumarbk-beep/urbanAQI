@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban AQI - Alerts</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>🌍 Urban Air Quality Monitoring System</h1>
+    <p>Environmental Engineering & Public Health</p>
+</header>
+
+<nav>
+    <a href="/">Dashboard</a>
+    <a href="/sensors">Sensors</a>
+    <a href="/history">History</a>
+    <a href="/alerts">Alerts</a>
+    <a href="#">Reports</a>
+</nav>
+
+<main>
+    <h2 class="section-title">⚠️ Air Quality Alerts</h2>
+
+    <p>Current air quality status and health guidance for Bengaluru.</p>
+
+    <section class="sensor-form">
+        <h2>Current AQI: <span th:text="${aqi}">57</span></h2>
+
+        <p>
+            Status:
+            <strong th:text="${status}">Satisfactory</strong>
+        </p>
+
+        <hr>
+
+        <h3>Health Advisory</h3>
+        <p th:text="${alert}">
+            Air quality information will appear here.
+        </p>
+
+        <p>
+            <a href="/">← Back to Dashboard</a>
+        </p>
+    </section>
+</main>
+
+<footer>
+    <p>Urban AQI Monitoring System | Java & Spring Boot Project</p>
+</footer>
+
+</body>
+</html>
